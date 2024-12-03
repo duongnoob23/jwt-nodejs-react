@@ -23,32 +23,20 @@ const handleCreateNewUser = (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
     console.log(req.body);
-    console.log(email, username, password);
-    // connection.query(
-    //     'SELECT * FROM users',
-    //     function (err, results, fields) {
-    //         if (err) {
-    //             console.log(err);
-    //         }
-    //         console.log(results);
-    //     }
-    // )
+
     connection.query(
         'INSERT INTO users (email,password,username) VALUES (?,?,?)', [email, password, username],
         function (err, results, fields) {
             if (err) {
                 console.log(err);
             }
-            console.log(results);
         }
     )
 
     return res.send("handleCreateNew");
 }
-
-const handleAbc = (req, res) => {
-    const name = "hello";
-    return res.render("home.ejs",{name});
+module.exports = {
+    handleHiWord,
+    handleUserPage,
+    handleCreateNewUser,
 }
-
-export { handleAbc, handleCreateNewUser, handleHiWord, handleUserPage };
