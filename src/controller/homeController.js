@@ -1,11 +1,4 @@
-import mysql from 'mysql2';
-
-const connection = mysql.createConnection({
-    host: "localhost",
-    user: 'root',
-    database: 'test',
-    port: 3307,
-});
+import * as userService from "../service/userService";
 
 
 const handleHiWord = (req, res) => {
@@ -18,31 +11,13 @@ const handleUserPage = (req, res) => {
 }
 
 
-const handleCreateNewUser = (req, res) => {
+const handleCreateNewUser = async (req, res) => {
     let email = req.body.email;
     let username = req.body.username;
     let password = req.body.password;
-    console.log(req.body);
-    console.log(email, username, password);
-    // connection.query(
-    //     'SELECT * FROM users',
-    //     function (err, results, fields) {
-    //         if (err) {
-    //             console.log(err);
-    //         }
-    //         console.log(results);
-    //     }
-    // )
-    connection.query(
-        'INSERT INTO users (email,password,username) VALUES (?,?,?)', [email, password, username],
-        function (err, results, fields) {
-            if (err) {
-                console.log(err);
-            }
-            console.log(results);
-        }
-    )
-
+    
+    userService.createNewUser(email, password, username);
+    // userService.getUserList();
     return res.send("handleCreateNew");
 }
 
