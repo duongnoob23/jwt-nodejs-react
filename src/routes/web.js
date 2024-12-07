@@ -7,8 +7,12 @@ const router = express.Router();
 const initWebRoutes = (app) => {
     router.get("/", homeController.handleHiWord);
     router.get("/user", homeController.handleUserPage);
-    router.post("/users/create-user",homeController.handleCreateNewUser);
-    router.post("/abc", homeController.handleAbc);
+    router.post("/pageUpdate/:id", homeController.handleUserUpdatePage);
+
+    router.post("/users/create-user", homeController.handleCreateNewUser);
+    router.post("/users/delete-user/:id", homeController.handleDelteUser);
+    router.post("/users/update-user", homeController.handleUpdateUser);
+    // router.post("/abc", homeController.handleAbc);
 
     return app.use("/", router); //web của mình sử dụng link bắt đầu với /
 }
