@@ -51,7 +51,7 @@
             </div>
         </form>
             </div>
-            <div class="table-users">
+            <div class="table-user">
                 <div class="">
                     <h3 class="title">
                         List Users
@@ -75,13 +75,19 @@
                                         <td><%= item.email %></td>
                                         <td><%= item.username %></td>
                                         <td>
-                                            <form action="/pageUpdate/<%= item.id %>" method="POST">
-                                                <button class="btn btn-warning" type="submit">Edit</button>
-                                            </form>
-                                            <form action="/users/delete-user/ <%= item.id %>" method="POST">
-                                                <button class="btn btn-danger" type="submit">Delete</button>
-                                            </form>
+                                            <div class="d-flex">
+                                                <!-- Edit Button -->
+                                                <form action="/pageUpdate/<%= item.id %>" method="POST">
+                                                    <button class="btn btn-warning me-2" type="submit">Edit</button>
+                                                </form>
+                                        
+                                                <!-- Delete Button -->
+                                                <form action="/users/delete-user/<%= item.id %>" method="POST">
+                                                    <button class="btn btn-danger" type="submit">Delete</button>
+                                                </form>
+                                            </div>
                                         </td>
+
                                     </tr>
                                     <% }) %>
                             </ul>

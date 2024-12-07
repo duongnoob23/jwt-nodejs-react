@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
 import mysql from 'mysql2/promise';
 import bluebird from 'bluebird';
+import db from "../models/index";
+
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -10,17 +12,16 @@ const hashPassword = (password) => {
 }
 
 const createNewUser =async  (email, password, username) => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-            database: 'test',
-        port: 3307,
-        Promise: bluebird,
-        });
+    
     let hashPass = hashPassword(password);
 
     try {
-        const [row, fields] = await connection.execute('INSERT INTO users (email,password,username) VALUES (?,?,?)',[email, hashPass, username]);
+        await db.User.create({
+            email: email,
+            username:username,
+            password: hashPass,
+        });
+        // console.log("chek >>> create user success")
     } catch (err){
         console.log("check >>> err", err);
     }
@@ -28,78 +29,77 @@ const createNewUser =async  (email, password, username) => {
 }
 
 const getUserList = async() => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-            database: 'test',
-        port: 3307,
-        Promise: bluebird,
-        });
+    let users = [];
     try {
-        const [row, fields] = await connection.execute('select * from users');
-        // console.log("chekc >>> row", row);
-        return row;
+        users = await db.User.findAll();
     } catch (err) {
-        console.log("chekc >>> errr", err);
+        console.log("check >>> err server", err);
     }
+    return users;
 }
 
 const getOneUser = async (idUser) => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-            database: 'test',
-        port: 3307,
-        Promise: bluebird,
-        });
+    let findUser = {};
     try {
-        const [row, fields] = await connection.execute(`SELECT * FROM users WHERE id=${idUser}`);
-        // console.log("chekc >>> row", row);
-        return row;
-
+        let oneUser = await db.User.findOne({
+            where: { id: idUser },
+            // raw: true // cach này chưa tối ưu
+        });
+        findUser = oneUser;
     } catch (err) {
-        console.log("chekc >>> errr", err);
+        console.log("check >>> err server", err);
     }
+    return findUser.get({ plain: true });
 }
 // module.exports = {
 //     createNewUser,
 // }
 const deleteUser = async (idUser) => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-            database: 'test',
-        port: 3307,
-        Promise: bluebird,
-        });
+    console.log("check >>> id", idUser);
     try {
-        const [row, fields] = await connection.execute(`DELETE FROM users WHERE id=${idUser}`);
-        // console.log("chekc >>> row", row);
-        return row;
+        const result = await db.User.destroy({
+            where: { id: idUser }
+        });
+        console.log("chekc >>> result", result);
     } catch (err) {
-        console.log("chekc >>> errr", err);
+        console.log(err);
     }
 }
 
 const updateInforUser = async (email, username, id) => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        database: 'test',
-        port: 3307,
-        Promise: bluebird,
-    });
+    
 
     try {
-        const [row, fields] = await connection.execute(
-            `UPDATE users SET email = ?, username = ? WHERE id = ?`, 
-            [email, username, id]
-        );
-        return row;
+        const result = await db.User.update({
+            email: email,
+            username: username
+        }, {
+            where: { id: id },
+            returning: true,  // Trả về bản ghi đã được cập nhật
+            raw: true         // Trả về dữ liệu thô
+        });
+        console.log("check >>> result", result[0]);
+        console.log("check >>> result", result[1]);
     } catch (err) {
         console.log("Error: ", err);
     } 
 }
 
 
-export {createNewUser,getUserList,deleteUser,getOneUser,updateInforUser}
+export { createNewUser, getUserList, deleteUser, getOneUser, updateInforUser }
+
+
+// const connection = await mysql.createConnection({
+//         host: 'localhost',
+//         user: 'root',
+//             database: 'test',
+//         port: 3307,
+//         Promise: bluebird,
+//         });
+//     try {
+//         const [row, fields] = await connection.execute('select * from user');
+//         // console.log("chekc >>> row", row);
+//         return row;
+//     } catch (err) {
+//         console.log("chekc >>> errr", err);
+//     }
