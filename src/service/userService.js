@@ -28,7 +28,9 @@ const createNewUser =async  (email, password, username) => {
    
 }
 
-const getUserList = async() => {
+const getUserList = async () => {
+   
+
     let users = [];
     try {
         users = await db.User.findAll();
