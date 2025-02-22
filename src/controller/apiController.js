@@ -38,8 +38,32 @@ const handleRegister = async (req, res) => {
   }
 };
 
-const hello = (req, res) => {
-  console.log("heelo");
+const handleLogin = async (req, res) => {
+  try {
+    console.log(">>> check req.body", req.body);
+
+    if (!req.body.account || !req.body.password) {
+      return res.status(200).json({
+        EM: "Missing required parameters",
+        EC: "1",
+        DT: "",
+      });
+    }
+
+    let data = await userService.loginUser(req.body);
+    res.cookie("jwt", data.DT.access_token, { httpOnly: true });
+    return res.status(200).json({
+      EM: data.EM,
+      EC: data.EC,
+      DT: data.DT,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      EM: "error",
+      EC: "-1",
+      DT: "",
+    });
+  }
 };
 
-export { testApi, handleRegister, hello };
+export { testApi, handleRegister, handleLogin };

@@ -6,6 +6,9 @@ const handleHiWord = (req, res) => {
 };
 
 const handleUserPage = async (req, res) => {
+  console.log("Cookiess", req.cookies);
+
+  res.cookie("test", "test cookies");
   let userList = await userService.getUserList();
   return res.render("user.ejs", { userList });
 };

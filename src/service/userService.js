@@ -1,8 +1,8 @@
-import bcrypt from "bcryptjs";
 import mysql from "mysql2/promise";
 import bluebird from "bluebird";
 import db from "../models/index";
 
+import bcrypt from "bcryptjs";
 const salt = bcrypt.genSaltSync(10);
 
 const hashPassword = (password) => {
