@@ -7,29 +7,18 @@ import * as groupController from "../controller/groupController";
 import { checkUserPermission, JWTCheck } from "../middleware/JWTACtion";
 const router = express.Router();
 
-// const checkUserLogin = (req, res, next) => {
-//   const arr = ['/login', '/register', '/'];
-//   if (arr.includes(req.path)) return next();
-
-//   if (user) {
-//     next();
-//   }e
-// }
-
 const initApiRoutes = (app) => {
+  router.all("*", JWTCheck, checkUserPermission);
+
   router.get("/test-api", apiController.testApi);
+
   router.post("/register", apiController.handleRegister);
   router.post("/login", apiController.handleLogin);
   // 4 api mới Controller mới
   // path, handler
   // rest api
   // GET - R , POST - C , PUT - U , DELETE - D
-  router.get(
-    "/user/read",
-    JWTCheck,
-    checkUserPermission,
-    userController.readFunc
-  );
+  router.get("/user/read", userController.readFunc);
   router.post("/user/create", userController.createFunc);
   router.put("/user/update", userController.updateFunc);
   router.delete("/user/delete/:id", userController.deleteFunc);
