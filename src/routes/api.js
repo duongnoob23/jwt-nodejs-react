@@ -14,6 +14,7 @@ const initApiRoutes = (app) => {
 
   router.post("/register", apiController.handleRegister);
   router.post("/login", apiController.handleLogin);
+  router.get("/account", userController.getAccount);
   // 4 api mới Controller mới
   // path, handler
   // rest api

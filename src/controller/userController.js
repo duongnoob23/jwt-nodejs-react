@@ -2,6 +2,7 @@ import * as userCRUDService from "../service/userCRUDService";
 import db from "../models/index";
 const readFunc = async (req, res) => {
   try {
+    // console.log(">>> check req.user readFunc", req.user);
     if (req.query.page && req.query.limit) {
       let page = req.query.page;
       let limit = req.query.limit;
@@ -124,4 +125,18 @@ const deleteFunc = async (req, res) => {
   }
 };
 
-export { readFunc, createFunc, updateFunc, deleteFunc };
+const getAccount = async (req, res) => {
+  console.log(">>> check account", req.user);
+  return res.status(200).json({
+    EM: "ok",
+    EC: 0,
+    DT: {
+      email: req.user.email,
+      username: req.user.username,
+      access_token: req.token,
+      data: req.user.roles,
+    },
+  });
+};
+
+export { getAccount, readFunc, createFunc, updateFunc, deleteFunc };

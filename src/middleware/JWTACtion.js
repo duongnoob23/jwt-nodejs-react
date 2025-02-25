@@ -42,6 +42,7 @@ const JWTCheck = (req, res, next) => {
       let decoded = verifyToken(token);
       if (decoded) {
         req.user = decoded; // gán biến mới cho req để các hàm sau có thể sử dụng req.user
+        req.token = token;
         next();
         // console.log("my jwt", cookies);
       } else {
@@ -64,7 +65,7 @@ const JWTCheck = (req, res, next) => {
 const checkUserPermission = (req, res, next) => {
   console.log(">>> check path", req.path);
 
-  if (nonSecurityPath.includes(req.path)) {
+  if (nonSecurityPath.includes(req.path) || req.path === "/account") {
     console.log(">>> next");
     next();
   } else {
