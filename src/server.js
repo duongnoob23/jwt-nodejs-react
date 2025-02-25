@@ -10,6 +10,7 @@ import configCors from "./configs/cors";
 import cookieParser from "cookie-parser";
 const app = express();
 
+configCors(app);
 // config view engine
 configViewEngine(app);
 
@@ -22,7 +23,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //test connection
 connection();
 
-configCors(app);
 // app.use(cors());
 
 //config CookieParser

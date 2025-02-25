@@ -104,6 +104,8 @@ const loginUser = async (userData) => {
           EM: "Login success",
           EC: "0",
           DT: {
+            email: user.email,
+            username: user.username,
             access_token: token,
             data: roles,
           },

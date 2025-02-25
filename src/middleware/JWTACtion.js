@@ -63,6 +63,7 @@ const JWTCheck = (req, res, next) => {
 
 const checkUserPermission = (req, res, next) => {
   console.log(">>> check path", req.path);
+
   if (nonSecurityPath.includes(req.path)) {
     console.log(">>> next");
     next();
