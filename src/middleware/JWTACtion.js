@@ -6,9 +6,10 @@ const nonSecurityPath = ["/", "/login", "/register"];
 const createJWT = (payload) => {
   try {
     let key = process.env.JWT_SECRET;
-    let token = jwt.sign(payload, key);
-    // console.log(process.env.JWT_SECRET);
-    // console.log(token);
+    let token = jwt.sign(payload, key, {
+      expiresIn: process.env.JWT_EXPIRE_IN, // Đúng chính tả
+    });
+
     return token;
   } catch (err) {
     console.log(err);
@@ -16,7 +17,6 @@ const createJWT = (payload) => {
 };
 
 const verifyToken = (token) => {
-  // console.log("*** run");
   let key = process.env.JWT_SECRET;
   let data = null;
 
