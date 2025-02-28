@@ -30,15 +30,23 @@ const verifyToken = (token) => {
   return data;
 };
 
+const extractToken = (token) => {
+  if (token && token.split(" ")[0] === "Bearer") {
+    return token.split(" ")[1];
+  }
+  return null;
+};
+
 const JWTCheck = (req, res, next) => {
   console.log(">>> check path", req.path);
+
   if (nonSecurityPath.includes(req.path)) {
-    console.log(">>> next");
     next();
   } else {
     let cookies = req.cookies;
-    if (cookies && cookies.jwt) {
-      let token = cookies.jwt;
+    let tokenFormHeader = extractToken(req.headers.authorization);
+    if ((cookies && cookies.jwt) || tokenFormHeader) {
+      let token = cookies && cookies.jwt ? cookies.jwt : tokenFormHeader;
       let decoded = verifyToken(token);
       if (decoded) {
         req.user = decoded; // gán biến mới cho req để các hàm sau có thể sử dụng req.user

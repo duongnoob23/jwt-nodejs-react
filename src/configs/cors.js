@@ -11,8 +11,9 @@ const configCors = (app) => {
     // Request headers you wish to allow
     res.setHeader(
       "Access-Control-Allow-Headers",
-      "X-Requested-With,content-type"
+      "X-Requested-With,content-type,Authorization"
     );
+    // NOTE những bài sau nên cấu hình chuẩn như này hoặc tải npm cors để không bị lỗi cors
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
     res.setHeader("Access-Control-Allow-Credentials", true);
